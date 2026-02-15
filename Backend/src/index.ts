@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
 
 import express from 'express';
+import cors from 'cors';
 import authRoutes from './routes/auth/signup.routes';
 import taskRoutes from './routes/tasks/task';
 import bodyParser from "body-parser";
@@ -9,6 +10,7 @@ import { connectDB } from './config/mongo';
 
 const app = express();
 
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {

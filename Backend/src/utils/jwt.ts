@@ -1,6 +1,9 @@
 import jsonwebtoken from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || '56f7d62b41139680837e5d598100bb778cbbdd727de1ea94f76c6cf9b8e9293a';
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+    throw new Error('JWT_SECRET environment variable is required');
+}
 const JWT_EXPIRES_IN = '15D';
 const JWT_ISSUER = process.env.JWT_ISSUER || 'task_manager';
 

@@ -1,17 +1,24 @@
 import ioredis from 'ioredis';
 
-const redis = new ioredis({
-  host: process.env.REDIS_HOST,
-  port: parseInt(process.env.REDIS_PORT || ""),
-  password: process.env.REDIS_PASSWORD,
-});
+let redis: ioredis | null = null;
 
-redis.on('connect', () => {
-  console.log('Connected to Redis');
-});
+function getRedis() {
+  if (!redis) {
+    redis = new ioredis({
+      host: process.env.REDIS_HOST || 'localhost',
+      port: parseInt(process.env.REDIS_PORT || '6379', 10),
+      password: process.env.REDIS_PASSWORD || undefined,
+    });
 
-redis.on('error', (err: any) => {
-  console.error('Redis error:', err);
-});
+    redis.on('connect', () => {
+      console.log('Connected to Redis');
+    });
 
-export default redis;
+    redis.on('error', (err: any) => {
+      console.error('Redis error:', err);
+    });
+  }
+  return redis;
+}
+
+export default getRedis;

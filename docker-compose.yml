@@ -10,8 +10,11 @@ services:
       - JWT_SECRET=56f7d62b41139680837e5d598100bb778cbbdd727de1ea94f76c6cf9b8e9293a
       - JWT_ISSUER=task_manager
     depends_on:
-      - mongo
-      - redis
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    restart: on-failure
 
   mongo:
     image: mongo:7
@@ -19,6 +22,12 @@ services:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
+    healthcheck:
+      test: mongosh --eval "db.runCommand('ping').ok" --quiet
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   redis:
     image: redis:7-alpine

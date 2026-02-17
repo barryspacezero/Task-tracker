@@ -52,51 +52,53 @@ export default function TaskForm({ onSubmit, initialData, onCancel }: TaskFormPr
     return (
         <form onSubmit={handleSubmit} className="bg-white p-4 rounded-lg shadow border mb-4">
             <div className="mb-3">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-slate-600 mb-1">
                     Title *
                 </label>
                 <input
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                    className="w-full px-3 py-2 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-300 text-slate-800"
                     required
                 />
             </div>
 
             <div className="mb-3">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-slate-600 mb-1">
                     Description
                 </label>
                 <textarea
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                    className="w-full px-3 py-2 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-300 text-slate-800"
                     rows={3}
                 />
             </div>
 
             <div className="mb-3">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-slate-600 mb-1">
                     Due Date
                 </label>
                 <input
                     type="date"
                     value={dueDate}
+                    min={new Date().toISOString().split("T")[0]}
+                    max={new Date(new Date().setFullYear(new Date().getFullYear() + 5)).toISOString().split("T")[0]}
                     onChange={(e) => setDueDate(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                    className="w-full px-3 py-2 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-300 text-slate-800"
                 />
             </div>
 
             {isEdit && (
                 <div className="mb-3">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-slate-600 mb-1">
                         Status
                     </label>
                     <select
                         value={status}
                         onChange={(e) => setStatus(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                        className="w-full px-3 py-2 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-300 text-slate-800"
                     >
                         <option value="pending">Pending</option>
                         <option value="completed">Completed</option>
@@ -108,7 +110,7 @@ export default function TaskForm({ onSubmit, initialData, onCancel }: TaskFormPr
                 <button
                     type="submit"
                     disabled={loading}
-                    className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50 transition-colors"
+                    className="bg-indigo-400 text-white px-4 py-2 rounded-md hover:bg-indigo-500 disabled:opacity-50 transition-colors"
                 >
                     {loading ? "Saving..." : isEdit ? "Update Task" : "Create Task"}
                 </button>
@@ -116,7 +118,7 @@ export default function TaskForm({ onSubmit, initialData, onCancel }: TaskFormPr
                     <button
                         type="button"
                         onClick={onCancel}
-                        className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition-colors"
+                        className="bg-gray-200 text-slate-600 px-4 py-2 rounded-md hover:bg-gray-300 transition-colors"
                     >
                         Cancel
                     </button>

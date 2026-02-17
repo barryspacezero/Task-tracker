@@ -66,32 +66,47 @@ export default function DashboardPage() {
         }
     }
 
+    async function handleToggleTask(taskId: string, newStatus: string) {
+        const previousTasks = [...tasks];
+
+        setTasks(tasks.map(t =>
+            t._id === taskId ? { ...t, status: newStatus } : t
+        ));
+
+        try {
+            await updateTask(taskId, { status: newStatus });
+        } catch {
+            setTasks(previousTasks);
+            alert("Failed to update task status");
+        }
+    }
+
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-100">
-                <p className="text-gray-500">Loading tasks...</p>
+            <div className="min-h-screen flex items-center justify-center bg-violet-50">
+                <p className="text-slate-400">Loading tasks...</p>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-gray-100">
+        <div className="min-h-screen bg-violet-50">
             <DashboardHeader />
 
             <main className="max-w-4xl mx-auto px-4 py-6">
                 {error && (
-                    <div className="bg-red-100 text-red-700 p-3 rounded mb-4 text-sm">
+                    <div className="bg-rose-100 text-rose-600 p-3 rounded mb-4 text-sm">
                         {error}
                     </div>
                 )}
 
                 <div className="flex justify-between items-center mb-4">
                     <div className="flex items-center gap-3">
-                        <label className="text-sm text-gray-600">Filter:</label>
+                        <label className="text-sm text-slate-500">Filter:</label>
                         <select
                             value={filter}
                             onChange={(e) => setFilter(e.target.value)}
-                            className="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="px-3 py-1 border border-slate-200 rounded-md text-sm text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-300"
                         >
                             <option value="all">All</option>
                             <option value="pending">Pending</option>
@@ -104,7 +119,7 @@ export default function DashboardPage() {
                             setShowForm(!showForm);
                             setEditingTask(null);
                         }}
-                        className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm transition-colors"
+                        className="bg-indigo-400 text-white px-4 py-2 rounded-md hover:bg-indigo-500 text-sm transition-colors"
                     >
                         {showForm ? "Cancel" : "+ New Task"}
                     </button>
@@ -133,6 +148,7 @@ export default function DashboardPage() {
                         setShowForm(false);
                     }}
                     onDelete={handleDeleteTask}
+                    onToggle={handleToggleTask}
                 />
             </main>
         </div>

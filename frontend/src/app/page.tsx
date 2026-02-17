@@ -17,7 +17,7 @@ export default function HomePage() {
   }, [router]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-violet-50">
       <p className="text-gray-500">Redirecting...</p>
     </div>
   );

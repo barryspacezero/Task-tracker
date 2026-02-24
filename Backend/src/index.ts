@@ -10,7 +10,22 @@ import { connectDB } from './config/mongo';
 
 const app = express();
 
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+const allowedOrigins = [
+    'http://localhost:3000',
+    'https://task-tracker-xmox.onrender.com',
+    'https://penguin-task-tracker.vercel.app',
+];
+app.use(cors({
+    origin: (origin, callback) => {
+        // Allow requests with no origin (e.g. curl, Postman)
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error(`CORS policy: origin '${origin}' not allowed`));
+        }
+    },
+    credentials: true,
+}));
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
@@ -20,9 +35,10 @@ app.get('/', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/tasks', taskRoutes);
 
+const PORT = process.env.PORT || 8000;
 connectDB().then(() => {
-    app.listen(8000, () => {
-        console.log('Server is running on port 8000');
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
     });
 }).catch((err) => {
     console.error('Failed to connect to MongoDB:', err);

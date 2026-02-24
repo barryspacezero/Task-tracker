@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import crypto from 'crypto';
 import UserService from '../services/user.service';
-import {signJwt} from "../utils/jwt";
+import { signJwt } from "../utils/jwt";
 
 async function signup(req: Request, res: Response) {
     const { name, email, password } = req.body;
